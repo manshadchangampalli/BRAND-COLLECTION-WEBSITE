@@ -19,7 +19,7 @@ getAllproducts:(callback)=>{
 deletProduct:(prodId)=>{
     return new Promise((resolve,reject)=>{
         db.get().collection(collection.PRODUCT_COLLECTION).removeOne({_id:objectId(prodId)}).then((response)=>{
-            console.log(response);
+            //console.log(response);
             resolve(response)
         })
     })
