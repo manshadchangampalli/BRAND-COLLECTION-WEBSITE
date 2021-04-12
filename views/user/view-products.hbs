@@ -3,9 +3,9 @@
         <div class="container mt-5">
             <div class="row "> 
                 {{#each products}}              
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="/public/product-images/{{this._id}}.jpg" alt="Card image cap">
+                <div class="col-md-3 mt-4">
+                    <div class="card" style="width: 15rem;height: 25rem;">
+                        <img class="card-img-top" style="width: 15rem;height: 15rem;" src='/product-images/{{this._id}}.jpg' alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">{{this.Name}}</h4>
                             <h6>{{this.category}}</h6>
