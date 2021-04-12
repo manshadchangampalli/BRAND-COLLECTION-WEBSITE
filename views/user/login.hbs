@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class="bg-dark">
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-4 bg-white " style="width: 240px;height: 400px;">
+                <h3 class="text-center mb-5 mt-3">login</h3>
+
+                <form action="/login" method="POST">
+                    <div class="form-group mt-3">
+                        <label>email</label>
+                        <input style="width: 310px;" class="form-control" type="email" name="Email" placeholder="example@gmail.com">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label>password</label>
+                        <input style="width: 310px;" type="password" class="form-control" name="Password" placeholder="include 0-9,A-B,a-b,@,#,...">
+                    </div>
+                    <div class="form-group mt-4">
+                        <a href="/signup">create a new account?</a>
+                        
+                    </div>
+                   <button style="margin-left: 140px; " class="btn-success mt-4 rounded" type="submit">LOIGN</button>
+                </form>
+                
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
