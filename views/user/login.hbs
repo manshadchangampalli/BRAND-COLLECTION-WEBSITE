@@ -11,10 +11,13 @@
 <body class="bg-dark">
     <div class="container ">
         <div class="row">
-            <div class="col-md-4 bg-white " style="width: 240px;height: 400px;">
+            <div class="col-md-4 bg-white " style="width: 240px;height: 430px;">
                 <h3 class="text-center mb-5 mt-3">login</h3>
 
                 <form action="/login" method="POST">
+                {{#if loginErr}}
+                <p class="error text-danger" >ivalied username or password</p>
+                {{/if}}
                     <div class="form-group mt-3">
                         <label>email</label>
                         <input style="width: 310px;" class="form-control" type="email" name="Email" placeholder="example@gmail.com">
