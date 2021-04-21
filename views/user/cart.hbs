@@ -6,21 +6,30 @@
                 <tr>
                     <th scope="col">Item</th>
                     <th scope="col">Title</th>
+                    <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
                 </tr>
             </thead>
             <tbody>
                 {{#each products}}
                 <tr>
-                    {{#each this.product}}
-                    <td><img src="/product-images/{{this._id}}.jpg" style="width: 70px; height: 70px;"></td>
-                    <td>{{this.Name}}</td>
-                    {{/each}}
+
+                    <td><img src="/product-images/{{this.product._id}}.jpg" style="width: 70px; height: 70px;"></td>
+                    <td>{{this.product.Name}}</td>
+                    <td class="text-success">₹ {{this.product.Price}}</td>
+
                     <td>
-                        <button class="cart-item-count mr-3 btn-outline-danger">-</button>{{this.quantity}}<button class="btn-outline-success cart-item-count ml-3">+</button>
+                        <button class="cart-item-count mr-3 btn-outline-danger"
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>
+                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+
+                        <button class="btn-outline-success cart-item-count ml-3"
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1)">+</button>
                     </td>
+
                     <td>
-                        <a href="" class="btn btn-danger">Remove</a>
+                        <a href="" onclick="removeProduct('{{this._id}}','{{this.product._id}}')"
+                            class="btn btn-danger">Remove</a>
                     </td>
                 </tr>
                 {{/each}}
@@ -28,3 +37,51 @@
         </table>
     </div>
 </section>
+<script>
+
+    function changeQuantity(cartId, proId, count) {
+        let quantity = parseInt(document.getElementById(proId).innerHTML)
+        count = parseInt(count)
+
+
+        $.ajax({
+            url: '/change-product-quantity',
+            data: {
+                cart: cartId,
+                product: proId,
+                count: count,
+                quantity: quantity
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.removeProduct) {
+                    alert("product Removed from cart")
+                    location.reload()
+                } else {
+                    document.getElementById(proId).innerHTML = quantity + count
+                }
+
+            }
+        })
+    }
+    </script>
+    <script>
+    function removeProduct(cartId, proId){
+         $.ajax({
+            url: '/remove-product',
+            data: {
+                cart: cartId,
+                product: proId,
+                
+            },
+            method: 'post',
+            success: (response) => {
+                response.removeProduct
+                    alert("product Removed from cart")
+                    location.reload()
+                
+
+            }
+        })
+    }
+</script>
