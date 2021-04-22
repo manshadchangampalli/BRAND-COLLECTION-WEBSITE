@@ -1,0 +1,39 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="pl-5 col-md-6">
+                <h2 class="mt-5">Enter Delivery Details</h2>
+                <div class="mt-4">
+                    <form action=""></form>
+                    <label class="font-weight-bold" for="name">Address</label><br>
+                    <input style="width: 85%;" id="Address" type="text" value="" name="Address">
+                </div>
+                <div class="mt-2">
+                    <label class="font-weight-bold" for="name">Pincode</label><br>
+                    <input style="width: 85%;" id="Pincode" type="number" value="" name="Pincode" maxlength="6">
+                </div>
+                <div class="mt-2">
+                    <label class="font-weight-bold" for="name">Mobile</label><br>
+                    <input style="width: 85%;" type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="width: 260px; height: 204px; margin-top: 104px;"
+                    class="border border-5 border-dark rounded p-2 ">
+                    <h6 class="text-center font-weight-bold">Total Amount:₹<span style="color: #232cd3">{{total}}.00</span></h6>
+                    <hr>
+                    <div class="ml-3">
+                        <label class="font-weight-bold " for="">Payment method</label><br>
+                        <input type="radio" id="male" name="gender" value="COD">
+                        <label for="">COD</label><br>
+                        <input type="radio" id="male" name="gender" value="Online Payment">
+                        <label for="">Online Payment</label><br>
+                        <button type="submit" class="btn-primary rounded float-right mr-2 mt-2">Checkout</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
