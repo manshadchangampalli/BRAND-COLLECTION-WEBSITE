@@ -20,11 +20,11 @@
 
                     <td>
                         <button class="cart-item-count mr-3 btn-outline-danger"
-                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
                         <span id="{{this.product._id}}">{{this.quantity}}</span>
 
                         <button class="btn-outline-success cart-item-count ml-3"
-                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1)">+</button>
+                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)">+</button>
                     </td>
 
                     <td>
@@ -36,13 +36,13 @@
             </tbody>
         </table>
         <hr>
-        <h4 style="margin-top: 50px; margin-left: 950px;" >Total:₹ {{this.total}} </h4>
-        <a style=" margin-left: 950px; width: 132px;" class="btn btn-success" href="/place-order" >Place order</a>
+        <h4 style="margin-top: 50px; margin-left: 950px;" >Total:₹ <span class="text-danger" id="total">{{totalValue}}.00</span> </h4>
+        <a style=" margin-left: 950px; width: 156px;" class="btn btn-success" href="/place-order" >Place order</a>
     </div>
 </section>
 <script>
 
-    function changeQuantity(cartId, proId, count) {
+    function changeQuantity(cartId, proId,userId, count) {
         let quantity = parseInt(document.getElementById(proId).innerHTML)
         count = parseInt(count)
 
@@ -50,6 +50,7 @@
         $.ajax({
             url: '/change-product-quantity',
             data: {
+                user:userId,
                 cart: cartId,
                 product: proId,
                 count: count,
@@ -62,6 +63,7 @@
                     location.reload()
                 } else {
                     document.getElementById(proId).innerHTML = quantity + count
+                    document.getElementById('total').innerHTML=response.total
                 }
 
             }
