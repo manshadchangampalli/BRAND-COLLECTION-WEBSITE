@@ -1,61 +1,107 @@
 <section>
     <div class="container">
-         <form action="" id="checkout-form">
-        <div class="row">
-            <div class="pl-5 col-md-6">
-                <h2 class="mt-5">Enter Delivery Details</h2>
-                <div class="mt-4">
-                   
-                    <label class="font-weight-bold" for="name">Address</label><br>
-                    <input style="width: 85%;" id="address" type="text" value="" name="address">
-                </div>
-                <div class="mt-2">
-                    <label class="font-weight-bold" for="name">Pincode</label><br>
-                    <input style="width: 85%;" id="pincode" type="number" value="" name="pincode" maxlength="6">
-                </div>
-                <div class="mt-2">
-                    <label class="font-weight-bold" for="name">Mobile</label><br>
-                    <input style="width: 85%;" type="tel" id="mobile" name="mobile" >
-                    <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+        <form action="" id="checkout-form">
+            <div class="row">
+                <div class="pl-5 col-md-6">
+                    <h2 class="mt-5">Enter Delivery Details</h2>
+                    <div class="mt-4">
 
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div style="width: 260px; height: 204px; margin-top: 104px;"
-                    class="border border-5 border-dark rounded p-2 ">
-                    <h6 class="text-center font-weight-bold">Total Amount:₹<span style="color: #232cd3">{{total}}.00</span></h6>
-                    <hr>
-                    <div class="ml-3 payment">
-                        <p>Payment method</p>
-                        <label class="radio-inline">
-                            <input type="radio" name="payment-method" value="COD" checked>COD
-                        </label><br>
-                        <label class="radio-inline ">
-                            <input type="radio" name="payment-method" value="ONLINE" > Online Payment
-                        </label><br>
-                        <button type="submit" class="btn-primary float-right">Checkout</button>
+                        <label class="font-weight-bold" for="name">Address</label><br>
+                        <input style="width: 85%;" id="address" type="text" value="" name="address">
                     </div>
-                   
+                    <div class="mt-2">
+                        <label class="font-weight-bold" for="name">Pincode</label><br>
+                        <input style="width: 85%;" id="pincode" type="number" value="" name="pincode" maxlength="6">
+                    </div>
+                    <div class="mt-2">
+                        <label class="font-weight-bold" for="name">Mobile</label><br>
+                        <input style="width: 85%;" type="tel" id="mobile" name="mobile">
+                        <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div style="width: 260px; height: 204px; margin-top: 104px;"
+                        class="border border-5 border-dark rounded p-2 ">
+                        <h6 class="text-center font-weight-bold">Total Amount:₹<span
+                                style="color: #232cd3">{{total}}.00</span></h6>
+                        <hr>
+                        <div class="ml-3 payment">
+                            <p>Payment method</p>
+                            <label class="radio-inline">
+                                <input type="radio" name="payment-method" value="COD" checked>COD
+                            </label><br>
+                            <label class="radio-inline ">
+                                <input type="radio" name="payment-method" value="ONLINE"> Online Payment
+                            </label><br>
+                            <button type="submit" class="btn-primary float-right">Checkout</button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
         </form>
     </div>
 </section>
+
 <script>
-    $("#checkout-form").submit((e)=>{
+    $("#checkout-form").submit((e) => {
         e.preventDefault()
         $.ajax({
-            url:'/place-order',
-            method:'post',
-            data:$('#checkout-form').serialize(),
-            success:(response)=>{
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
                 alert(response)
-                if(response.status){
-                    location.href='/order-status'
+                if (response.cod_success) {
+                    location.href = '/order-status'
+                } else {
+                    razorpayPayment(response)
                 }
             }
 
         })
     })
+
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_iFRk1LdYwuSYZU", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Brand Collection",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature)
+
+                verifyPayment(response,order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function verifyPayment(payment,order){
+        $.ajax({
+            url:'/verify-payment',
+            data:{
+                payment,
+                order
+            },
+            method:'post'
+        })
+    }
 </script>
