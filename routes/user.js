@@ -125,8 +125,17 @@ router.get('/view-order-products/:id',async(req,res)=>{
   let products=await userHelpers.getOrderProducts(req.params.id)
   res.render('user/view-order-products',{user:req.session.user,products})
 })
-router.post('verify-payment',(req,res)=>{
+router.post('/verify-payment',(req,res)=>{
   console.log(req.body);
+  userHelpers.verifyPayment(req.body).then(()=>{
+    userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
+      console.log('payment successfully');
+      res.json({status:true})
+    })
+  }).catch((err)=>{
+    console.log(err)
+    res.json({status:false,errMsg:''})
+  })
 })
 
 module.exports = router;
